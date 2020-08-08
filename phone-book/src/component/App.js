@@ -3,6 +3,7 @@ import '../App.css';
 import PhonForm from './PhoneForm'
 
 class App extends Component {
+  id = 3;
   state = {
     information : [
       {
@@ -18,10 +19,36 @@ class App extends Component {
     ]
   }
 
+  handleCreate = (data) => {
+    const {information} = this.state
+    this.setState({
+      information: information.concat({id:this.id++, ...data})
+    })
+  }
+
+  handleRemove = (id) => {
+    const {information} = this.state
+    this.setState({
+      information: information.filter((list) => list.id !== id)
+    })
+  }
+
+  handleUpdate = (id, data)=>{
+    const {information} = this.state
+    this.setState({
+      information: information.map(list => list.id === id ? {...list, ...data} : list)
+    })
+  }
+
   render(){
     return (
       <div className="App">
-        <PhonForm information={this.state.information}/>
+        <PhonForm 
+        information={this.state.information}
+        onCreate={this.handleCreate.bind(this)}
+        onRemove={this.handleRemove.bind(this)}
+        onUpdate={this.handleUpdate.bind(this)}    
+        />
       </div>
     )
   }
