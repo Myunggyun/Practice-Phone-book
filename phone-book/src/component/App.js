@@ -16,7 +16,8 @@ class App extends Component {
         name: '홍길동',
         phone: '010-9876-5432'
       }
-    ]
+    ],
+    keyword:''
   }
 
   handleCreate = (data) => {
@@ -40,14 +41,25 @@ class App extends Component {
     })
   }
 
+  handelSearch = (searchData)=>{
+    this.setState({
+      keyword: searchData
+    })
+  }
+
   render(){
+    const {information, keyword} = this.state
+    const filterdlist = information.filter(list=>
+      list.name.indexOf(keyword) !== -1
+    )
     return (
       <div className="App">
         <PhonForm 
-        information={this.state.information}
+        information={filterdlist}
         onCreate={this.handleCreate.bind(this)}
         onRemove={this.handleRemove.bind(this)}
-        onUpdate={this.handleUpdate.bind(this)}    
+        onUpdate={this.handleUpdate.bind(this)}
+        onSearch={this.handelSearch.bind(this)}
         />
       </div>
     )

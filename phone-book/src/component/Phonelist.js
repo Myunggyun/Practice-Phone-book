@@ -7,10 +7,9 @@ class Phonelist extends Component{
     phone:''
   }
 
-  handleToggle = ()=>{
+  handleToggle = ()=>{//수정버튼을 누르면 껐다,켰다하는 기능
     const { editing } = this.state
     this.setState({ editing: !editing })
-    console.log(editing)
   }
 
   handleChange = (e)=>{
@@ -21,8 +20,10 @@ class Phonelist extends Component{
   }
 
   componentDidUpdate (prevProps, prevState){
+    //prevProps는 이전 Props 값, prevState는 이전 state 값
     const {information, onUpdate} = this.props
     if(!prevState.editing && this.state.editing){
+      //이전 상태값이 false이고 현재 state 값이 true일 때
       this.setState({
         name: information.name,
         phone: information.phone
@@ -30,11 +31,23 @@ class Phonelist extends Component{
     }
 
     if(prevState.editing && !this.state.editing){
+      //이전 상태값이 true이고 현재 state 값이 false 일 때
       onUpdate(information.id, {
         name: this.state.name,
         phone: this.state.phone
       });     
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // 수정 상태가 아니고, info 값이 같다면 리렌더링 안함
+    if (!this.state.editing  
+        && !nextState.editing
+        && nextProps.information === this.props.information) {
+      return false;
+    }
+    // 나머지 경우엔 리렌더링함
+    return true;
   }
 
   render() {

@@ -24,6 +24,10 @@ class PhoneForm extends Component {
     document.querySelector('.input-phone').value = ''
   }
 
+  handleSearch = (e) =>{
+    this.props.onSearch(e.target.value)
+  }
+
   render(){
     return (
       <div className="form">
@@ -34,6 +38,11 @@ class PhoneForm extends Component {
           name="phone" onChange={this.handleChange.bind(this)}/>
           <button>등록</button>
         </form>
+        <div>
+          <input type="text" placeholder="찾고싶은 이름을 입력하세요"
+          onChange={this.handleSearch.bind(this)}/>
+          <button>검색</button>
+        </div>
         {
           this.props.information.map((list)=>
             <Phonelist 
